@@ -1,0 +1,2 @@
+# zjsn-script
+autojs javascript
