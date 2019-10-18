@@ -1,0 +1,10 @@
+{
+    "name": "zjsn_r",
+    "main": "main.js",
+    "ignore": [
+        "build"
+    ],
+    "packageName": "com.chiikin",
+    "versionName": "1.0.0",
+    "versionCode": 1
+}
