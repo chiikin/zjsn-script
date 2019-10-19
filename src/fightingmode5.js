@@ -48,7 +48,7 @@ function fighting(fightedCount) {
     if (!fightingHelper.fighting(30000, false))
         return false;
 
-    if (!fightingHelper.fightendToSelectMap())
+    if (!fightingHelper.fightendToSelectMap(10000))
         return false;//战斗结束
 
     gotTrophy = true;

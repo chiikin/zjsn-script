@@ -171,8 +171,9 @@ fightingHelper.fightend = function () {
 };
 
 /**结束后直到跳转到选择地图页面 */
-fightingHelper.fightendToSelectMap = function () {
-    if (!screenHelper.waitSelectMap2(5000)) {
+fightingHelper.fightendToSelectMap = function (timeout) {
+    timeout=timeout||5000;
+    if (!screenHelper.waitSelectMap2(timeout)) {
         toast("无法确定当前是否处于选择地图页面");
         console.log("无法确定当前是否处于选择地图页面");
         return false;
