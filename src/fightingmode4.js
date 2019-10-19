@@ -1,5 +1,5 @@
 
-//
+//临时活动
 let screenHelper, fightingHelper;
 function initialize(screenHelper_in, fightingHelper_in) {
     screenHelper = screenHelper_in;

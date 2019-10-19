@@ -94,7 +94,8 @@ const actionPoints = {
     supplyLabel: { x: 590, y: 850 },
     supplyButton: { x: 1771, y: 737 },
     propareScreenFightButton: { x: 1676, y: 996 },
-    EnemyPreviewFightButton: { x: 1848, y: 1002 },
+    enemyPreviewFightButton: { x: 1848, y: 1002 },
+    enemyPreviewBackButton: { x: 1498, y: 1002 },
     fightFormations: [
         { x: 1475, y: 256 }, { x: 1475, y: 425 }, { x: 1475, y: 602 }, { x: 1475, y: 785 }, { x: 1475, y: 962 },
     ],
@@ -138,14 +139,14 @@ function initialize() {
 var currentScreen;
 var lastCaptureTime = 0;
 
-function checkAllColors(colors) {
+function checkAllColors(colors, threshold) {
     if (!(colors instanceof Array))
         return false;
     for (var i = 0; i < colors.length; i++) {
         var color = colors[i];
         var ret = images.findColor(currentScreen, color.color, {
             region: [color.region.x, color.region.y, color.region.w, color.region.h],
-            threshold: color.threshold || screenColors.threshold
+            threshold: threshold || color.threshold || screenColors.threshold
         });
         if (!ret)
             return false;
@@ -172,7 +173,7 @@ function waitScreen(timeout, checker, extendHandler) {
     timeout = timeout || 100;
     let waitedTime = 0;
     while (waitedTime < timeout) {
-        console.log('waiting',waitedTime,timeout);
+        console.log('waiting', waitedTime, timeout);
         waitedTime += 100;
         if (typeof extendHandler === 'function') {
             extendHandler();
@@ -324,8 +325,14 @@ screenHelper.waitBattleEnemyPreview = function (timeout) {
 
 /** 敌人预览界面点击出击按钮 */
 screenHelper.touchEnemyPreviewFightButton = function () {
-    return press(actionPoints.EnemyPreviewFightButton.x, actionPoints.EnemyPreviewFightButton.y, 100);
+    return press(actionPoints.enemyPreviewFightButton.x, actionPoints.enemyPreviewFightButton.y, 100);
 };
+
+/** 敌人预览界面点击撤退按钮 */
+screenHelper.touchEnemyPreviewBackButton = function () {
+    return press(actionPoints.enemyPreviewBackButton.x, actionPoints.enemyPreviewBackButton.y, 100);
+};
+
 //fightFormation
 /** 阵型选择界面 */
 screenHelper.isFightFormation = function () {
@@ -430,9 +437,9 @@ screenHelper.selectBattle = function (battleNo) {
 //活动临时：
 /**是否是活动地图选择页面 */
 screenHelper.isActiveMapSelect = function () {
-    var colors = [ { region: { x: 831, y: 72, w: 10, h: 10 }, color: 0xb32d22 },
-        { region: { x: 1188, y: 72, w: 10, h: 10 }, color: 0xb52d21 },
-        { region: { x: 45, y: 928, w: 10, h: 10 }, color: 0xfcffff }];
+    var colors = [{ region: { x: 831, y: 72, w: 10, h: 10 }, color: 0xb32d22 },
+    { region: { x: 1188, y: 72, w: 10, h: 10 }, color: 0xb52d21 },
+    { region: { x: 45, y: 928, w: 10, h: 10 }, color: 0xfcffff }];
     return checkAllColors(colors);
 }
 
@@ -443,16 +450,16 @@ screenHelper.waitActiveMapSelect = function (timeout) {
 };
 
 screenHelper.selectActiveMap = function (mapNo) {
-    let maps = [{x:557,y:318},{x:537,y:718},{x:1287,y:328},{x:1316,y:697}]
-    var mapPoint=maps[mapNo];
+    let maps = [{ x: 557, y: 318 }, { x: 537, y: 718 }, { x: 1287, y: 328 }, { x: 1316, y: 697 }]
+    var mapPoint = maps[mapNo];
     return press(mapPoint.x, mapPoint.y, 100);
 }
 
 /**是否是活动地图确认页面 */
 screenHelper.isActiveMapSelected = function () {
-    var colors = [ { region: { x: 1517, y: 926, w: 10, h: 10 }, color: 0x228ff4 },
-        { region: { x: 1795, y: 926, w: 10, h: 10 }, color: 0x1f8cf1 },
-        { region: { x: 327, y: 96, w: 10, h: 10 }, color: 0x218ef5 }];
+    var colors = [{ region: { x: 1517, y: 926, w: 10, h: 10 }, color: 0x228ff4 },
+    { region: { x: 1795, y: 926, w: 10, h: 10 }, color: 0x1f8cf1 },
+    { region: { x: 327, y: 96, w: 10, h: 10 }, color: 0x218ef5 }];
     return checkAllColors(colors);
 }
 
@@ -464,15 +471,15 @@ screenHelper.waitActiveMapSelected = function (timeout) {
 
 screenHelper.goActiveMap = function (mapNo) {
     //let maps = [{x:557,y:318},{x:537,y:718},{x:1287,y:328},{x:1316,y:697}]
-    var mapPoint={x:1646,y:925};
+    var mapPoint = { x: 1646, y: 925 };
     return press(mapPoint.x, mapPoint.y, 100);
 }
 
 /**是否是活动地图出击准备页面 */
 screenHelper.isActiveMapPrepare = function () {
-    var colors = [ { region: { x: 1547, y: 1000, w: 10, h: 10 }, color: 0xffd92e },
-        { region: { x: 1807, y: 1002, w: 10, h: 10 }, color: 0xfcd82c },
-        { region: { x: 185, y: 47, w: 10, h: 10 }, color: 0xfefffa }];
+    var colors = [{ region: { x: 1547, y: 1000, w: 10, h: 10 }, color: 0xffd92e },
+    { region: { x: 1807, y: 1002, w: 10, h: 10 }, color: 0xfcd82c },
+    { region: { x: 185, y: 47, w: 10, h: 10 }, color: 0xfefffa }];
     return checkAllColors(colors);
 }
 
@@ -484,7 +491,7 @@ screenHelper.waitActiveMapPrepare = function (timeout) {
 
 screenHelper.goActiveMapFinghting = function (mapNo) {
     //let maps = [{x:557,y:318},{x:537,y:718},{x:1287,y:328},{x:1316,y:697}]
-    var mapPoint={x:1677,y:997};
+    var mapPoint = { x: 1677, y: 997 };
     return press(mapPoint.x, mapPoint.y, 100);
 }
 
@@ -494,5 +501,17 @@ screenHelper.skipAchieveDialog = function () {
 
     return screenHelper.touchResourceDialogOK();
 };
+
+
+/**敌人预览界面是否包含补给船(战利品) */
+screenHelper.hasSupplyShop = function () {
+    var colors = [{ region: { x: 40, y: 555, w: 10, h: 10 }, color: 0xcfe0e8 },
+    { region: { x: 280, y: 575, w: 10, h: 10 }, color: 0xfff8f0 },
+    { region: { x: 550, y: 535, w: 10, h: 10 }, color: 0x79eaf0 },
+//    { region: { x: 570, y: 560, w: 10, h: 10 }, color: 0x91fbf9 }
+];
+
+    return checkAllColors(colors,20);
+}
 
 module.exports = screenHelper;

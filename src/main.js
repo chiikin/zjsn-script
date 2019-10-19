@@ -6,7 +6,8 @@ let screenhelper = require("screenhelper.js");
 let fightingMode1 = require("fightingmode1.js");
 let fightingMode2 = require("fightingmode2.js");
 let fightingMode3 = require("fightingmode3.js");
-let fightingMode4 = require("fightingmode4.js");
+//let fightingMode4 = require("fightingmode4.js");
+let fightingMode5 = require("fightingmode5.js");
 
 function initialize() {
     if (!requestScreenCapture()) {
@@ -20,7 +21,8 @@ fightingHelper.initialize(screenhelper);
 fightingMode1.initialize(screenhelper, fightingHelper);
 fightingMode2.initialize(screenhelper, fightingHelper);
 fightingMode3.initialize(screenhelper, fightingHelper);
-fightingMode4.initialize(screenhelper, fightingHelper);
+//fightingMode4.initialize(screenhelper, fightingHelper);
+fightingMode5.initialize(screenhelper, fightingHelper);
 
 initialize();
 
@@ -29,7 +31,8 @@ var options = {
         runMode1: fightingMode1.run,
         runMode2: fightingMode2.run,
         runMode3: fightingMode3.run,
-        runMode4: fightingMode4.run
+        //runMode4: fightingMode4.run,
+        runMode5: fightingMode5.run
     }
 };
 

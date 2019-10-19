@@ -23,7 +23,7 @@ function setMode1UI(win, runCallback) {
 
     //绑定事件
     win.btnRunMode1.on('click', () => {
-        var times = win.fightingTimes2.getSelectedItemPosition();
+        var times = win.fightingTimes.getSelectedItemPosition();
         if (times === 0)
             times = 1;
         else
@@ -135,24 +135,64 @@ function setMode3UI(win, runCallback) {
     });
 }
 
-function setMode4UI(win, runCallback) {
+// function setMode4UI(win, runCallback) {
+//     //绑定事件
+//     win.btnRunMode4.on('click', () => {
+//         var times = win.fightingTimes4.getSelectedItemPosition();
+//         if (!times)
+//             times = 1;
+//         else
+//             times *= 10;
+//         var config = {
+//             fightingTimes: times
+//         };
+//         //回调方法
+//         win.close();
+//         if (options.events && typeof options.events.runMode4 === 'function') {
+//             options.events.runMode4(config, runCallback);
+//         }
+//     });
+//     win.tab1_close4.on('click', function () {
+//         exit();
+//     });
+// }
+
+function setMode5UI(win, runCallback) {
+    var zjsnStorage = storages.create("zjsn");
+    //mode1
+    //加载配置
+    var mode5Config = JSON.parse(zjsnStorage.get('mode5:config', JSON.stringify({
+        team: 1, fightingTimes: 1
+    })));
+
+    if (mode5Config.team)
+        win.spGoTeam5.setSelection(mode5Config.team - 1);
+    if (mode5Config.fightingTimes)
+        win.fightingTimes5.setSelection(Math.floor((mode5Config.fightingTimes || 0) / 10));
+
     //绑定事件
-    win.btnRunMode4.on('click', () => {
-        var times = win.fightingTimes4.getSelectedItemPosition();
-        if (!times)
+    win.btnRunMode5.on('click', () => {
+        var times = win.fightingTimes5.getSelectedItemPosition();
+        if (times === 0)
             times = 1;
         else
-            times *= 10;
+            times = times * 10;
         var config = {
+            team: win.spGoTeam5.getSelectedItemPosition() + 1,
             fightingTimes: times
         };
+        var configJson = JSON.stringify(config);
+        //toast(configJson);
+        //保存本次配置
+        var zjsnStorage = storages.create("zjsn");
+        zjsnStorage.put('mode5:config', configJson);
         //回调方法
         win.close();
-        if (options.events && typeof options.events.runMode4 === 'function') {
-            options.events.runMode4(config, runCallback);
+        if (options.events && typeof options.events.runMode5 === 'function') {
+            options.events.runMode5(config, runCallback);
         }
     });
-    win.tab1_close4.on('click', function () {
+    win.tab1_close5.on('click', function () {
         exit();
     });
 }
@@ -173,11 +213,11 @@ function setWindowConfig(win) {
     win.setSize(winWidth, winHeight);
     win.setPosition(deviceW / 2 - winWidth / 2, 100);
     //win.exitOnClose();
-    win.viewpager.setTitles(['模式1', '模式2', '模式3', '模式4']);
+    win.viewpager.setTitles(['模式1', '模式2', '模式3', '模式5']);
     win.tabs.setupWithViewPager(win.viewpager);
-    win.btnClose.on('click', () => {
-        exit();
-    });
+    // win.btnClose.on('click', () => {
+    //     exit();
+    // });
 }
 
 function showMainDialog(options, runCallback) {
@@ -250,28 +290,29 @@ function showMainDialog(options, runCallback) {
                 </frame>
                 <frame>
                     <vertical>
-                        <text text="模式4:活动临时"></text>
+                        <text text="模式5:2-1"></text>
                         <horizontal>
-                            <text text="出征次数:"></text>
-                            <spinner id="fightingTimes4" entries="1|10|20|30|40|50" spinnerMode="dialog" />
+                            <text text="出征队伍："></text>
+                            <spinner id="spGoTeam5" entries="队伍1|队伍2|队伍3|队伍4" spinnerMode="dialog" />
                         </horizontal>
                         <horizontal>
-                            <button id="btnRunMode4" text="开始" />
-                            <button id="tab1_close4" text="关闭" />
+                            <text text="出征次数:"></text>
+                            <spinner id="fightingTimes5" entries="1|10|20|30|40|50" spinnerMode="dialog" />
+                        </horizontal>
+                        <horizontal>
+                            <button id="btnRunMode5" text="开始" />
+                            <button id="tab1_close5" text="关闭" />
                         </horizontal>
                     </vertical>
                 </frame>
             </viewpager>
-            <button id="btnClose" text="关闭" />
         </vertical>
     );
     setMode1UI(win, runCallback);
-
     setMode2UI(win, runCallback);
-
     setMode3UI(win, runCallback);
-
-    setMode4UI(win, runCallback);
+    //setMode4UI(win, runCallback);
+    setMode5UI(win, runCallback);
 
     setWindowConfig(win);
     return win;
